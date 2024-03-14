@@ -5,7 +5,7 @@ import 'package:dictionary_app/model/word.dart';
 class WordDB {
   final tableName = 'words';
 
-  Future<void> createTable(Database db, int version) async {
+  Future<void> createTable(Database db) async {
     await db.execute('''
       CREATE TABLE words (
         id INTEGER PRIMARY KEY AUTOINCREMENT,

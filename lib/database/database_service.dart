@@ -1,3 +1,4 @@
+import 'package:dictionary_app/database/word_db.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 

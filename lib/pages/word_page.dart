@@ -1,6 +1,5 @@
 import 'package:dictionary_app/model/word.dart';
 import 'package:flutter/material.dart';
-import 'package:sqflite/sqflite.dart';
 import 'package:dictionary_app/database/word_db.dart'; // Import your WordDB class
 
 class WordPage extends StatefulWidget {
