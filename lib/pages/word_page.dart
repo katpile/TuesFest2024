@@ -1,7 +1,6 @@
 import 'package:dictionary_app/model/word.dart';
 import 'package:flutter/material.dart';
 import 'package:dictionary_app/database/word_db.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class WordPage extends StatefulWidget {
   const WordPage({super.key});
@@ -80,8 +79,8 @@ class _WordPageState extends State<WordPage> {
                               120, 0, 20, 0), // Adjust left and right padding
                           child: Text(
                             '${_word?.word}',
-                            style: GoogleFonts.pangolin(
-                                //fontStyle: GoogleFonts.pangolin(),
+                            style: TextStyle(
+                                fontFamily: 'Pangolin',
                                 fontSize: 36,
                                 fontWeight: FontWeight.bold,
                                 color:
@@ -95,6 +94,7 @@ class _WordPageState extends State<WordPage> {
                           child: Text(
                             'Тип: ${_word?.type}',
                             style: TextStyle(
+                                fontFamily: 'Pangolin',
                                 fontSize: 20,
                                 color:
                                     Colors.brown[800]), // Set type text style
@@ -107,6 +107,7 @@ class _WordPageState extends State<WordPage> {
                           child: Text(
                             'Дефиниция: ${_word?.definition}',
                             style: TextStyle(
+                                fontFamily: 'Pangolin',
                                 fontSize: 20,
                                 color: Colors
                                     .brown[800]), // Set definition text style
@@ -119,6 +120,7 @@ class _WordPageState extends State<WordPage> {
                           child: Text(
                             'Пример: ${_word?.usageExample}',
                             style: TextStyle(
+                                fontFamily: 'Pangolin',
                                 fontSize: 20,
                                 fontStyle: FontStyle.italic,
                                 color: Colors.brown[
