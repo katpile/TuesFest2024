@@ -1,6 +1,12 @@
+import 'package:dictionary_app/pages/word_page.dart';
+import 'package:dictionary_app/utils/word_adder.dart';
 import 'package:flutter/material.dart';
+import 'package:sqflite/sqflite.dart';
+import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
 void main() {
+  sqfliteFfiInit();
+  databaseFactory = databaseFactoryFfi;
   runApp(const MyApp());
 }
 
@@ -10,8 +16,9 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    addWordsToDB();
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'За думите',
       theme: ThemeData(
         // This is the theme of your application.
         //
@@ -31,7 +38,12 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      // Define routes for navigation
+      initialRoute: '/',
+      routes: {
+        '/': (context) => WordPage(), // WordPage as the initial route
+        // You can define more routes here if needed
+      },
     );
   }
 }

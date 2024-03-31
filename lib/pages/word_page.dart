@@ -1,6 +1,7 @@
 import 'package:dictionary_app/model/word.dart';
 import 'package:flutter/material.dart';
-import 'package:dictionary_app/database/word_db.dart'; // Import your WordDB class
+import 'package:dictionary_app/database/word_db.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class WordPage extends StatefulWidget {
   const WordPage({super.key});
@@ -12,7 +13,7 @@ class WordPage extends StatefulWidget {
 class _WordPageState extends State<WordPage> {
   Future<List<Word>>? futureWord;
   final wordDB = WordDB();
-  late Word _word;
+  Word? _word;
 
   @override
   void initState() {
@@ -21,18 +22,26 @@ class _WordPageState extends State<WordPage> {
   }
 
   void fetchWord() async {
-    // Get the current date
-    DateTime currentDate = DateTime.now();
+    //DateTime currentDate = DateTime.now();
 
-    // Fetch words from the database with the addedDate matching the current day
-    List<Word> words = await WordDB().fetchAllByDate(currentDate);
+    Word? word = await WordDB().fetchById(1);
 
-    if (words.isNotEmpty) {
+    if (word != null) {
       setState(() {
-        _word = words.first;
+        _word = word;
       });
     } else {
-      print('No word found for today.');
+      print('No word found with ID 1.');
+      // Initialize _word with a default value or handle the case where _word is null
+      setState(() {
+        _word = Word(
+            id: 0,
+            word: '',
+            type: '',
+            definition: '',
+            usageExample: '',
+            addedDate: DateTime.now());
+      });
     }
   }
 
@@ -40,35 +49,86 @@ class _WordPageState extends State<WordPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Word of the Day'),
+        title: Text('Дума на деня'),
+        backgroundColor:
+            Colors.brown[400], // Set app bar background color to brown
       ),
-      // ignore: unnecessary_null_comparison
       body: _word != null
-          ? Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Word: ${_word.word}',
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+          ? Center(
+              child: Align(
+                alignment: Alignment.center,
+                child: Container(
+                  width: MediaQuery.of(context).size.width *
+                      0.5, // Set the width of the container to 50% of the screen width
+                  height: 400,
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                      image: AssetImage(
+                          'assets/scroll.png'), // Path to your scroll image asset
+                      fit: BoxFit
+                          .fill, // Ensure the image covers the entire container
+                    ),
                   ),
-                  SizedBox(height: 10),
-                  Text(
-                    'Type: ${_word.type}',
-                    style: TextStyle(fontSize: 16),
+                  child: SingleChildScrollView(
+                    // Make the content scrollable
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SizedBox(height: 100), // Add space from top
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(
+                              120, 0, 20, 0), // Adjust left and right padding
+                          child: Text(
+                            '${_word?.word}',
+                            style: GoogleFonts.pangolin(
+                                //fontStyle: GoogleFonts.pangolin(),
+                                fontSize: 36,
+                                fontWeight: FontWeight.bold,
+                                color:
+                                    Colors.brown[800]), // Set word text style
+                          ),
+                        ),
+                        SizedBox(height: 20),
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(
+                              120, 0, 20, 0), // Adjust left and right padding
+                          child: Text(
+                            'Тип: ${_word?.type}',
+                            style: TextStyle(
+                                fontSize: 20,
+                                color:
+                                    Colors.brown[800]), // Set type text style
+                          ),
+                        ),
+                        SizedBox(height: 10),
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(
+                              120, 0, 20, 0), // Adjust left and right padding
+                          child: Text(
+                            'Дефиниция: ${_word?.definition}',
+                            style: TextStyle(
+                                fontSize: 20,
+                                color: Colors
+                                    .brown[800]), // Set definition text style
+                          ),
+                        ),
+                        SizedBox(height: 10),
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(
+                              120, 0, 100, 0), // Adjust left and right padding
+                          child: Text(
+                            'Пример: ${_word?.usageExample}',
+                            style: TextStyle(
+                                fontSize: 20,
+                                fontStyle: FontStyle.italic,
+                                color: Colors.brown[
+                                    800]), // Set usage example text style
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
-                  SizedBox(height: 10),
-                  Text(
-                    'Definition: ${_word.definition}',
-                    style: TextStyle(fontSize: 16),
-                  ),
-                  SizedBox(height: 10),
-                  Text(
-                    'Usage Example: ${_word.usageExample}',
-                    style: TextStyle(fontSize: 16),
-                  ),
-                ],
+                ),
               ),
             )
           : Center(

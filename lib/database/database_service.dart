@@ -20,6 +20,15 @@ class DatabaseService {
     return join(path, name);
   }
 
+  // Future<void> insertWord(Map<String, dynamic> wordMap) async {
+  //   final database = await DatabaseService().database;
+  //   await database.insert(
+  //     'words', // tableName should be replaced with 'words'
+  //     wordMap,
+  //     conflictAlgorithm: ConflictAlgorithm.replace,
+  //   );
+  // }
+
   Future<Database> _initialize() async {
     final path = await fullPath;
     var database = await openDatabase(

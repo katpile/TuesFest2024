@@ -21,6 +21,7 @@ class Word {
         type: map['type'] ?? '',
         definition: map['definition'] ?? '',
         usageExample: map['usage_example'] ?? '',
-        addedDate: DateTime.fromMicrosecondsSinceEpoch(map['added_date']),
+        addedDate:
+            DateTime.fromMicrosecondsSinceEpoch(int.parse(map['added_date'])),
       );
 }

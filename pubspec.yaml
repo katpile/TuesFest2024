@@ -9,9 +9,12 @@ environment:
   sdk: ^3.1.1
 
 dependencies:
+  sqflite_common_ffi: any
+
   flutter:
     sdk: flutter
 
+  google_fonts: ^2.0.0
   english_words: ^4.0.0
   provider: ^6.0.0
   sqflite: any
@@ -21,9 +24,11 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   intl: ^0.17.0
-  sqflite: ^2.1.0+1
 
   flutter_lints: ^2.0.0
 
 flutter:
   uses-material-design: true
+
+  assets:
+    - assets/scroll.png

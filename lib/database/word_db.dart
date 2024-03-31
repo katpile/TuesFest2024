@@ -13,16 +13,22 @@ class WordDB {
         type TEXT,
         definition TEXT,
         usage_example TEXT,
-        added_date TEXT,
+        added_date TEXT
       )
     ''');
   }
 
-  Future<int> create({required String name}) async {
+  Future<int> create(Word word) async {
     final database = await DatabaseService().database;
     return await database.rawInsert(
-      '''INSERT INTO $tableName (name,added_date) VALUES(?,?)''',
-      [name, DateTime.now().millisecondsSinceEpoch],
+      '''INSERT INTO $tableName (word, type, definition, usage_example, added_date) VALUES(?, ?, ?, ?, ?)''',
+      [
+        word.word,
+        word.type,
+        word.definition,
+        word.usageExample,
+        word.addedDate.millisecondsSinceEpoch
+      ],
     );
   }
 
@@ -33,11 +39,25 @@ class WordDB {
     return words.map((word) => Word.fromSqfliteDatabase(word)).toList();
   }
 
-  Future<Word> fetchById(int id) async {
+  // Future<Word> fetchById(int id) async {
+  //   final database = await DatabaseService().database;
+  //   final word = await database
+  //       .rawQuery('''SELECT * from $tableName WHERE id = ?''', [id]);
+  //   return Word.fromSqfliteDatabase(word.first);
+  // }
+
+  Future<Word?> fetchById(int id) async {
     final database = await DatabaseService().database;
-    final word = await database
-        .rawQuery('''SELECT * from $tableName WHERE id = ?''', [id]);
-    return Word.fromSqfliteDatabase(word.first);
+    List<Map<String, dynamic>> words = await database.rawQuery(
+      'SELECT * FROM $tableName WHERE id = ?',
+      [id],
+    );
+
+    if (words.isNotEmpty) {
+      return Word.fromSqfliteDatabase(words.first);
+    } else {
+      return null; // Return null if no word with the specified ID is found
+    }
   }
 
   Future<List<Word>> fetchAllByDate(DateTime currentDate) async {
