@@ -2,17 +2,27 @@ import 'package:dictionary_app/database/word_db.dart';
 import 'package:dictionary_app/model/word.dart';
 
 void addWordsToDB() async {
+  // Word newWord = Word(
+  //   id: 1,
+  //   word: 'фееричен',
+  //   type: 'същ.',
+  //   definition: 'Приказно красив, вълшебен.',
+  //   usageExample: 'Пепеляшка отиде на бала с феерична рокля.',
+  //   addedDate: DateTime.now(),
+  // );
+
+  // await WordDB().create(newWord);
+
   Word newWord = Word(
-    id: 1,
-    word: 'фееричен',
+    id: 2,
+    word: 'полифония',
     type: 'същ.',
-    definition: 'Приказно красив, вълшебен.',
-    usageExample: 'Пепеляшка отиде на бала с феерична рокля.',
+    definition: 'Свойство на един знак, образ да притежава няколко значения.',
+    usageExample: 'Червеното е полифоничен цвят.',
     addedDate: DateTime.now(),
   );
 
   await WordDB().create(newWord);
-
   // List<Word> wordsToAdd = [
   //   Word(
   //     id: 1,

@@ -69,4 +69,36 @@ class WordDB {
     );
     return words.map((word) => Word.fromSqfliteDatabase(word)).toList();
   }
+
+  // Future<Word?> fetchRandomWord() async {
+  //   final database = await DatabaseService().database;
+  //   //int randomId = 1 + DateTime.now().day % 2;
+  //   int randomId = 10;
+  //   List<Map<String, dynamic>> words = await database.rawQuery(
+  //     'SELECT * FROM $tableName',
+  //   );
+
+  //   // Filter the list of words to find the one with the random ID
+  //   List<Map<String, dynamic>> filteredWords =
+  //       words.where((word) => word['id'] == randomId).toList();
+
+  //   if (filteredWords.isNotEmpty) {
+  //     return Word.fromSqfliteDatabase(filteredWords.first);
+  //   } else {
+  //     return null; // Return null if no word with the specified ID is found
+  //   }
+  // }
+
+  Future<Word?> fetchRandomWord() async {
+    final database = await DatabaseService().database;
+    List<Map<String, dynamic>> words = await database.rawQuery(
+      'SELECT * FROM $tableName ORDER BY RANDOM() LIMIT 1',
+    );
+
+    if (words.isNotEmpty) {
+      return Word.fromSqfliteDatabase(words.first);
+    } else {
+      return null;
+    }
+  }
 }
