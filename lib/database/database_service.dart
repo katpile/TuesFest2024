@@ -11,7 +11,18 @@ class DatabaseService {
     }
 
     _database = await _initialize();
+    checkDatabaseContent();
     return _database!;
+  }
+
+  Future<void> checkDatabaseContent() async {
+    final Database db = await database;
+    List<Map> result = await db.query('words');
+    if (result.isEmpty) {
+      print('Database is empty');
+    } else {
+      print('Database has data');
+    }
   }
 
   Future<String> get fullPath async {

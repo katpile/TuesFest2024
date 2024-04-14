@@ -1,33 +1,40 @@
 import 'package:awesome_notifications/awesome_notifications.dart';
+import 'package:dictionary_app/database/database_service.dart';
 import 'package:dictionary_app/pages/word_page.dart';
+import 'package:dictionary_app/utils/word_adder.dart';
 import 'package:flutter/material.dart';
-import 'package:sqflite_common_ffi/sqflite_ffi.dart';
+import 'package:sqflite/sqflite.dart';
+//import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
 void main() {
   AwesomeNotifications().initialize(
-    'assets/logo.png',
-    [
-      NotificationChannel(
-        channelKey: 'basic_channel',
-        channelName: 'Basic notifications',
-        channelDescription: 'Notification channel for basic notifications',
-        defaultColor: Color.fromARGB(255, 242, 166, 166),
-        ledColor: const Color.fromARGB(255, 255, 72, 72),
-      ),
-    ],
-  );
+      null, // default icon
+      [
+        NotificationChannel(
+          channelKey: 'dictionary_app',
+          channelName: 'Dictionary app',
+          channelDescription: 'Notification channel for daily updates',
+          defaultColor: Color(0xFF9D50DD),
+          ledColor: Colors.white,
+          playSound: true,
+          enableVibration: true,
+        ),
+        // Define other channels if necessary
+      ],
+      debug: true // set this to false in production
+      );
 
   AwesomeNotifications().createNotification(
     content: NotificationContent(
-      id: 0,
-      channelKey: 'daily_notification',
-      title: 'Дума на деня',
-      body: 'Обогатете речника си днес!',
-    ),
+        id: 10,
+        channelKey: 'dictionary_app',
+        title: 'Дума на деня',
+        body: 'Обогатете речника си днес!',
+        icon: 'resource://drawable/logo'),
     schedule: NotificationCalendar(
       timeZone: 'Europe/Sofia', // Set the time zone to Bulgarian time
-      hour: 9,
-      minute: 0,
+      hour: 1,
+      minute: 16,
       second: 0,
       allowWhileIdle:
           true, // Allow notification to be shown even if device is idle
@@ -36,20 +43,56 @@ void main() {
   );
   //await fetchAndDisplayRandomWord();
 
-  sqfliteFfiInit();
-  databaseFactory = databaseFactoryFfi;
+  //sqfliteFfiInit();
+  //databaseFactory = databaseFactoryFfi;
   runApp(MyApp());
 }
 
-class MyApp extends StatelessWidget {
+// class MyApp extends StatelessWidget {
+//   @override
+//   Widget build(BuildContext context) {
+//     return MaterialApp(
+//       title: 'За думите',
+//       theme: ThemeData(
+//         primarySwatch: Colors.orange,
+//       ),
+//       home: WordPage(),
+//     );
+//   }
+// }
+
+class MyApp extends StatefulWidget {
+  @override
+  _MyAppState createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  @override
+  void initState() {
+    super.initState();
+    checkDatabaseContent();
+  }
+
   @override
   Widget build(BuildContext context) {
+    print("Building MyApp");
+    addWordsToDB();
     return MaterialApp(
       title: 'За думите',
       theme: ThemeData(
-        primarySwatch: Colors.orange,
+        primarySwatch: Colors.blue,
       ),
       home: WordPage(),
     );
+  }
+
+  Future<void> checkDatabaseContent() async {
+    final Database db = await DatabaseService().database;
+    List<Map> result = await db.query('words');
+    if (result.isEmpty) {
+      print('Database is empty');
+    } else {
+      print('Database has data');
+    }
   }
 }

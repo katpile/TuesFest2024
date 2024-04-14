@@ -89,15 +89,35 @@ class WordDB {
   //   }
   // }
 
-  Future<Word?> fetchRandomWord() async {
-    final database = await DatabaseService().database;
-    List<Map<String, dynamic>> words = await database.rawQuery(
-      'SELECT * FROM $tableName ORDER BY RANDOM() LIMIT 1',
-    );
+  // Future<Word?> fetchRandomWord() async {
+  //   final database = await DatabaseService().database;
+  //   List<Map<String, dynamic>> words = await database.rawQuery(
+  //     'SELECT * FROM $tableName ORDER BY RANDOM() LIMIT 1',
+  //   );
 
-    if (words.isNotEmpty) {
-      return Word.fromSqfliteDatabase(words.first);
-    } else {
+  //   if (words.isNotEmpty) {
+  //     return Word.fromSqfliteDatabase(words.first);
+  //   } else {
+  //     return null;
+  //   }
+  // }
+
+  Future<Word?> fetchRandomWord() async {
+    try {
+      final database = await DatabaseService().database;
+      print("Database path: ${database.path}"); // Log the database path
+      List<Map<String, dynamic>> words = await database.rawQuery(
+        'SELECT * FROM $tableName ORDER BY RANDOM() LIMIT 1',
+      );
+
+      if (words.isNotEmpty) {
+        return Word.fromSqfliteDatabase(words.first);
+      } else {
+        print("No words found in the database.");
+        return null;
+      }
+    } catch (e) {
+      print("Database query failed: $e"); // Log any exceptions
       return null;
     }
   }

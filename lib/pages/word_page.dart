@@ -49,11 +49,53 @@ class _WordPageState extends State<WordPage> {
     super.dispose();
   }
 
+  // void _fetchAndDisplayRandomWord() async {
+  //   Word? word = await _wordDB.fetchRandomWord();
+  //   setState(() {
+  //     _word = word;
+  //   });
+  // }
+
   void _fetchAndDisplayRandomWord() async {
-    Word? word = await _wordDB.fetchRandomWord();
-    setState(() {
-      _word = word;
-    });
+    print('Fetching word...');
+    try {
+      Word? word = await _wordDB.fetchRandomWord();
+      if (word != null) {
+        print('Word fetched: ${word.word}');
+        setState(() {
+          _word = word;
+        });
+      } else {
+        print('No word found.');
+        setState(() {
+          // Set a default state if no word is found
+          _word = Word(
+            id: 0,
+            word: 'Default',
+            type: 'N/A',
+            definition: 'No word found.',
+            usageExample: 'N/A',
+            addedDate: DateTime.now(),
+          );
+        });
+      }
+    } catch (e) {
+      print('An error occurred: $e');
+      // The following line will help you understand the nature of the exception
+      print('Error Details: ${e.toString()}');
+      setState(() {
+        // Handle the error state as well, if an exception is thrown
+        _word = Word(
+          id: 0,
+          word: 'Error',
+          type: 'N/A',
+          definition:
+              'An error occurred while fetching the word. Please try again later.',
+          usageExample: 'N/A',
+          addedDate: DateTime.now(),
+        );
+      });
+    }
   }
 
   // @override
@@ -96,6 +138,7 @@ class _WordPageState extends State<WordPage> {
 
   @override
   Widget build(BuildContext context) {
+    print("Building word page");
     final Color beige = Color(0xFFF5F5DC);
     final Color brown = Color(0xFFA52A2A);
 
