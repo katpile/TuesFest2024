@@ -41,3 +41,12 @@ flutter:
     - family: Bulgaria Moderna
       fonts:
         - asset:  fonts/Bulgaria Moderna Pro.otf
+
+    - family: Agnets
+      fonts:
+        - asset: fonts/AgnetsType-Regular.ttf
+
+    - family: Czizh
+      fonts:
+        - asset: fonts/Czizh Body.ttf
+

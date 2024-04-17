@@ -13,10 +13,6 @@ class WordPage extends StatefulWidget {
 }
 
 class _WordPageState extends State<WordPage> {
-  // Future<List<Word>>? futureWord;
-  // late Timer _timer;
-  // final wordDB = WordDB();
-  // Word? _word;
   late Timer _timer;
   final WordDB _wordDB = WordDB();
   Word? _word;
@@ -30,10 +26,8 @@ class _WordPageState extends State<WordPage> {
       }
     });
 
-    // Fetch and display a random word when the app starts
     _fetchAndDisplayRandomWord();
 
-    // Check if it's 9 a.m. every minute and fetch a new random word if so
     _timer = Timer.periodic(Duration(minutes: 1), (timer) {
       if (_isNineAM()) {
         _fetchAndDisplayRandomWord();
@@ -81,10 +75,8 @@ class _WordPageState extends State<WordPage> {
       }
     } catch (e) {
       print('An error occurred: $e');
-      // The following line will help you understand the nature of the exception
       print('Error Details: ${e.toString()}');
       setState(() {
-        // Handle the error state as well, if an exception is thrown
         _word = Word(
           id: 0,
           word: 'Error',
@@ -98,39 +90,6 @@ class _WordPageState extends State<WordPage> {
     }
   }
 
-  // @override
-  // void initState() {
-  //   AwesomeNotifications().isNotificationAllowed().then((isAllowed) {
-  //     if (!isAllowed) {
-  //       AwesomeNotifications().requestPermissionToSendNotifications();
-  //     }
-  //   });
-  //   super.initState();
-  //   fetchWord();
-  // }
-
-  // void fetchWord() async {
-  //   //DateTime currentDate = DateTime.now();
-
-  //   Word? word = await WordDB().fetchRandomWord();
-
-  //   if (word != null) {
-  //     setState(() {
-  //       _word = word;
-  //     });
-  //   } else {
-  //     print('No word found with fetched ID.');
-  //     // Initialize _word with a default value or handle the case where _word is null
-  //     setState(() {
-  //       _word = Word(
-  //           id: 0,
-  //           word: '',
-  //           type: '',
-  //           definition: '',
-  //           usageExample: '',
-  //           addedDate: DateTime.now());
-  //     });
-  //   }
   bool _isNineAM() {
     DateTime now = DateTime.now();
     return now.hour == 9 && now.minute == 0 && now.second == 0;
@@ -144,12 +103,12 @@ class _WordPageState extends State<WordPage> {
 
     return Scaffold(
       backgroundColor:
-          Colors.black, // Set the Scaffold background color to black
+          Color(0xFF121212), // Set the Scaffold background color to black
       appBar: AppBar(
         title: Text(
           'За думите',
           style: TextStyle(
-            fontFamily: 'Bulgaria Moderna',
+            fontFamily: 'Agnets',
             color: beige,
           ),
         ),
@@ -162,23 +121,23 @@ class _WordPageState extends State<WordPage> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Text(
-                    'Дума на деня',
+                    'ДУМА НА ДЕНЯ',
                     style: TextStyle(
-                      fontFamily: 'Bulgaria Moderna',
+                      fontFamily: 'Agnets',
                       fontSize: 24,
                       color: beige,
                     ),
                   ),
-                  SizedBox(height: 16), // Adds space between text and scroll
+                  SizedBox(height: 10),
                   Container(
                     width: MediaQuery.of(context).size.width * 0.8,
-                    height: MediaQuery.of(context).size.height * 0.6,
+                    height: MediaQuery.of(context).size.height * 0.7,
                     padding: EdgeInsets.all(
-                        16), // Include padding inside the constraints
+                        25), // Include padding inside the constraints
                     decoration: BoxDecoration(
                       image: DecorationImage(
                         image: AssetImage('assets/scroll.png'),
-                        fit: BoxFit.fill,
+                        fit: BoxFit.cover,
                       ),
                     ),
                     alignment: Alignment.center,
@@ -190,48 +149,42 @@ class _WordPageState extends State<WordPage> {
                           Text(
                             '${_word?.word}',
                             style: TextStyle(
-                              fontFamily: 'Bulgaria Moderna',
+                              fontFamily: 'Czizh',
                               fontSize: 36,
                               color: brown,
-                              // Other style properties
                             ),
                             textAlign: TextAlign.center,
                           ),
-                          SizedBox(
-                              height:
-                                  24), // Adjust space between text elements as needed
+                          SizedBox(height: 10),
                           Text(
                             'дефиниция: ${_word?.definition}',
                             style: TextStyle(
-                              fontFamily: 'Bulgaria Moderna',
+                              fontFamily: 'Czizh',
                               fontSize: 18,
                               color: brown,
-                              // Other style properties
                             ),
-                            textAlign: TextAlign.center,
+                            textAlign: TextAlign.left,
                           ),
-                          SizedBox(height: 16),
+                          SizedBox(height: 10),
                           Text(
                             'тип: ${_word?.type}',
                             style: TextStyle(
-                              fontFamily: 'Bulgaria Moderna',
+                              fontFamily: 'Czizh',
                               fontSize: 18,
                               color: brown,
-                              // Other style properties
                             ),
-                            textAlign: TextAlign.center,
+                            textAlign: TextAlign.left,
                           ),
-                          SizedBox(height: 16),
+                          SizedBox(height: 10),
                           Text(
                             'пример: ${_word?.usageExample}',
                             style: TextStyle(
-                              fontFamily: 'Bulgaria Moderna',
+                              fontFamily: 'Czizh',
                               fontStyle: FontStyle.italic,
                               fontSize: 18,
                               color: brown,
-                              // Other style properties
                             ),
-                            textAlign: TextAlign.center,
+                            textAlign: TextAlign.left,
                           ),
                         ],
                       ),

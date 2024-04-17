@@ -34,11 +34,10 @@ void main() {
     schedule: NotificationCalendar(
       timeZone: 'Europe/Sofia', // Set the time zone to Bulgarian time
       hour: 1,
-      minute: 16,
+      minute: 43,
       second: 0,
-      allowWhileIdle:
-          true, // Allow notification to be shown even if device is idle
-      repeats: true, // Repeat daily
+      allowWhileIdle: true,
+      repeats: true,
     ),
   );
   //await fetchAndDisplayRandomWord();
@@ -47,19 +46,6 @@ void main() {
   //databaseFactory = databaseFactoryFfi;
   runApp(MyApp());
 }
-
-// class MyApp extends StatelessWidget {
-//   @override
-//   Widget build(BuildContext context) {
-//     return MaterialApp(
-//       title: 'За думите',
-//       theme: ThemeData(
-//         primarySwatch: Colors.orange,
-//       ),
-//       home: WordPage(),
-//     );
-//   }
-// }
 
 class MyApp extends StatefulWidget {
   @override

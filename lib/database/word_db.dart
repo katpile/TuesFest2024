@@ -1,6 +1,7 @@
 import 'package:sqflite/sqflite.dart';
 import 'package:dictionary_app/database/database_service.dart';
 import 'package:dictionary_app/model/word.dart';
+import 'dart:math';
 
 class WordDB {
   final tableName = 'words';
@@ -19,6 +20,7 @@ class WordDB {
   }
 
   Future<int> create(Word word) async {
+    print("addind word to db");
     final database = await DatabaseService().database;
     return await database.rawInsert(
       '''INSERT INTO $tableName (word, type, definition, usage_example, added_date) VALUES(?, ?, ?, ?, ?)''',
@@ -38,13 +40,6 @@ class WordDB {
         .rawQuery('''SELECT * from $tableName ORDER BY COALESCE(created_at)''');
     return words.map((word) => Word.fromSqfliteDatabase(word)).toList();
   }
-
-  // Future<Word> fetchById(int id) async {
-  //   final database = await DatabaseService().database;
-  //   final word = await database
-  //       .rawQuery('''SELECT * from $tableName WHERE id = ?''', [id]);
-  //   return Word.fromSqfliteDatabase(word.first);
-  // }
 
   Future<Word?> fetchById(int id) async {
     final database = await DatabaseService().database;
@@ -70,55 +65,40 @@ class WordDB {
     return words.map((word) => Word.fromSqfliteDatabase(word)).toList();
   }
 
-  // Future<Word?> fetchRandomWord() async {
-  //   final database = await DatabaseService().database;
-  //   //int randomId = 1 + DateTime.now().day % 2;
-  //   int randomId = 10;
-  //   List<Map<String, dynamic>> words = await database.rawQuery(
-  //     'SELECT * FROM $tableName',
-  //   );
-
-  //   // Filter the list of words to find the one with the random ID
-  //   List<Map<String, dynamic>> filteredWords =
-  //       words.where((word) => word['id'] == randomId).toList();
-
-  //   if (filteredWords.isNotEmpty) {
-  //     return Word.fromSqfliteDatabase(filteredWords.first);
-  //   } else {
-  //     return null; // Return null if no word with the specified ID is found
-  //   }
-  // }
-
-  // Future<Word?> fetchRandomWord() async {
-  //   final database = await DatabaseService().database;
-  //   List<Map<String, dynamic>> words = await database.rawQuery(
-  //     'SELECT * FROM $tableName ORDER BY RANDOM() LIMIT 1',
-  //   );
-
-  //   if (words.isNotEmpty) {
-  //     return Word.fromSqfliteDatabase(words.first);
-  //   } else {
-  //     return null;
-  //   }
-  // }
-
   Future<Word?> fetchRandomWord() async {
-    try {
-      final database = await DatabaseService().database;
-      print("Database path: ${database.path}"); // Log the database path
-      List<Map<String, dynamic>> words = await database.rawQuery(
-        'SELECT * FROM $tableName ORDER BY RANDOM() LIMIT 1',
-      );
+    final database = await DatabaseService().database;
+    Random random = Random();
+    int randomId = random.nextInt(70) + 22;
+    print(randomId);
+    List<Map<String, dynamic>> words = await database
+        .rawQuery('SELECT * FROM $tableName WHERE id = ?', [randomId]);
 
-      if (words.isNotEmpty) {
-        return Word.fromSqfliteDatabase(words.first);
-      } else {
-        print("No words found in the database.");
-        return null;
-      }
-    } catch (e) {
-      print("Database query failed: $e"); // Log any exceptions
+    List<Map<String, dynamic>> filteredWords =
+        words.where((word) => word['id'] == randomId).toList();
+
+    print("Fetched word data: $words");
+
+    if (filteredWords.isNotEmpty) {
+      return Word.fromSqfliteDatabase(filteredWords.first);
+    } else {
       return null;
     }
+  }
+
+  Future<bool> doesWordExist(String word) async {
+    final db = await DatabaseService().database;
+    final results = await db.query(
+      'words',
+      where: 'word = ?',
+      whereArgs: [word],
+    );
+    return results.isNotEmpty;
+  }
+
+  Future<void> clearTable(String tableName) async {
+    print("clearing table");
+    final db = await DatabaseService()
+        .database; // Assuming WordDB provides a 'database' getter
+    await db.delete(tableName);
   }
 }
