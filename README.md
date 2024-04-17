@@ -1,16 +1,3 @@
-# dictionary_app
+# За думите
 
-A new Flutter project.
-
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Мобилно приложение на Flutter за TUESFEST 2024. Приложението показва думи на потребителя заедно с тяхната дефиниция, тип и пример за употреба. Думите в базата данни са с екстравагантен характер с цел обогатяване на речника на потребителите. 
